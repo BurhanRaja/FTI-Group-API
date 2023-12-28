@@ -1,6 +1,7 @@
 const express = require("express");
 const db = require("./db/db");
 const bodyParser = require("body-parser");
+const path = require("path");
 
 const app = express();
 const port = 3000;
@@ -12,6 +13,13 @@ db.sequelize.sync().then(() => {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(
+  "/images",
+  express.static(path.join(__dirname + "/public/images"), {
+    maxAge: 31557600,
+  })
+);
 
 app.get("/", (req, res) => {
   res.status(200).send({

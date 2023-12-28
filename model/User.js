@@ -11,6 +11,7 @@ module.exports = (sequelize) => {
       status: DataTypes.STRING,
       roleid: DataTypes.INTEGER,
       teamid: DataTypes.INTEGER,
+      forgetPasswordToken: DataTypes.STRING,
     },
     {
       timestamps: true,

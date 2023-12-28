@@ -6,4 +6,7 @@ module.exports = {
   emailUsername: process.env.EMAIL_USERNAME,
   emailPassword: process.env.EMAIL_PASSWORD,
   emailPort: process.env.EMAIL_PORT,
+  appName: process.env.APP_NAME,
+  appEmail: process.env.APP_EMAIL,
+  frontendUrl: process.env.FRONTEND_URL,
 };
