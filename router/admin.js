@@ -22,7 +22,26 @@ const { checkAdmin } = require("../middleware/checkAdmin");
 const router = Router();
 
 // Auth
-router.post("/login", adminLogin);
+router.post(
+  "/login",
+  [
+    check("email", "Email is required")
+      .notEmpty()
+      .exists()
+      .withMessage("Email is required")
+      .isEmail()
+      .withMessage("Invalid Email"),
+    check("password", "Password is required")
+      .notEmpty()
+      .exists()
+      .withMessage("Email is required")
+      .isLength({ min: 4 })
+      .withMessage("Min. 4 characters for Password")
+      .isLength({ max: 15 })
+      .withMessage("Min. 4 characters for Password"),
+  ],
+  adminLogin
+);
 
 // User
 router.post("/createuser", checkAdmin, createUser);
@@ -47,7 +66,6 @@ router.post("/add/teammember", checkAdmin, addUserToTeam);
 router.post("/remove/teammember/:userId", checkAdmin, removeTeamMember);
 
 // Role
-
 router.post("/add/role", checkAdmin, createRole);
 
 router.post("/assignrole", checkAdmin, assignRoleToUser);
