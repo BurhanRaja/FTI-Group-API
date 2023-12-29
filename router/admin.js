@@ -16,6 +16,7 @@ const {
   removeTeamMember,
   getAllTeam,
   getSingleTeam,
+  getSingleRole,
 } = require("../controller/admin");
 const { checkAdmin } = require("../middleware/checkAdmin");
 const router = Router();
@@ -45,14 +46,18 @@ router.post("/add/teammember", checkAdmin, addUserToTeam);
 
 router.post("/remove/teammember/:userId", checkAdmin, removeTeamMember);
 
+// Role
+
 router.post("/add/role", checkAdmin, createRole);
 
 router.post("/assignrole", checkAdmin, assignRoleToUser);
 
-router.post("/update/role", checkAdmin, updateRoleAndPermission);
+router.put("/update/role/:roleId", checkAdmin, updateRoleAndPermission);
 
 router.get("/all/role", checkAdmin, getAllRoles);
 
-router.get("/role/:roleId", checkAdmin);
+router.get("/role/:roleId", checkAdmin, getSingleRole);
+
+// Contracts
 
 module.exports = router;

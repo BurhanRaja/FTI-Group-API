@@ -10,7 +10,8 @@ const {
 } = require("../config/config");
 const path = require("path");
 const ejs = require("ejs");
-const { transporter } = require("../utils/emailTransport");
+const crypto = require("crypto");
+const transporter = require("../utils/emailTransport");
 
 exports.userLogin = async (req, res) => {
   let success = false;
@@ -58,8 +59,9 @@ exports.userLogin = async (req, res) => {
       token,
     });
   } catch (err) {
-    return res.status(200).send({
-      status: 200,
+    return res.status(500).send({
+      err,
+      status: 500,
       success,
       message: "Internal Server Error.",
     });
@@ -110,6 +112,29 @@ exports.editUser = async (req, res) => {
       status: 200,
       success,
       message: "User Editted successfully.",
+    });
+  } catch (err) {
+    return res.status(500).send({
+      status: 500,
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+exports.getUser = async (req, res) => {
+  let success = false;
+
+  try {
+    const user = await User.findOne({
+      where: { id: req.user.id },
+    });
+
+    success = true;
+    return res.status(200).send({
+      status: 200,
+      success,
+      data: user,
     });
   } catch (err) {
     return res.status(500).send({
@@ -237,7 +262,7 @@ exports.forgetPassword = async (req, res) => {
       html: template,
     };
 
-    await transporter.sendEmail(mailData);
+    await transporter.sendMail(mailData);
 
     success = true;
     return res.status(200).send({
@@ -246,6 +271,7 @@ exports.forgetPassword = async (req, res) => {
       message: "Email sent successfully.",
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       status: 500,
       success,
@@ -254,7 +280,7 @@ exports.forgetPassword = async (req, res) => {
   }
 };
 
-exports.verifyForgetPasswordEmail = async (req, res) => {
+exports.resetPassword = async (req, res) => {
   let success = false;
 
   try {
@@ -312,5 +338,3 @@ exports.verifyForgetPasswordEmail = async (req, res) => {
     });
   }
 };
-
-exports.resetPassword = async (req, res) => {};

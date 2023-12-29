@@ -544,6 +544,7 @@ exports.createRole = async (req, res) => {
       message: "Role created successfully.",
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       status: 500,
       success,
@@ -582,13 +583,21 @@ exports.getSingleRole = async (req, res) => {
       where: {
         id: roleId,
       },
+      raw: true,
+    });
+
+    let allPermissions = await Permission.findAll({
+      where: {
+        roleid: role.id,
+      },
+      raw: true,
     });
 
     success = true;
     return res.status(200).send({
       status: 200,
       success,
-      data: role,
+      data: { ...role, permissions: allPermissions },
     });
   } catch (err) {
     return res.status(500).send({
@@ -738,6 +747,13 @@ exports.updateRoleAndPermission = async (req, res) => {
         });
       }
     }
+
+    success = true;
+    return res.status(200).send({
+      status: 200,
+      success,
+      message: "Role updated successfully.",
+    });
   } catch (err) {
     return res.status(500).send({
       status: 500,

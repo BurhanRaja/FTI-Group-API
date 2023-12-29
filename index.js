@@ -28,6 +28,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/admin", require("./router/admin"));
+app.use("/api/user", require("./router/user"));
 
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`);

@@ -3,7 +3,7 @@ const { jwtSecretKey } = require("../config/config");
 const { user } = require("../db/db");
 const User = user;
 
-exports.checkUser = async (req, res) => {
+exports.checkUser = async (req, res, next) => {
   let success = false;
 
   try {
@@ -39,7 +39,6 @@ exports.checkUser = async (req, res) => {
       let user = await User.findOne({
         where: {
           id: data.id,
-          email: data.email,
         },
       });
 
